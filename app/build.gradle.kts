@@ -15,8 +15,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":core-domain"))
-                implementation(project(":core-ui"))
+                implementation(project(":kmpicture"))
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)

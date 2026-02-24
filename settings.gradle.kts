@@ -18,9 +18,9 @@ dependencyResolutionManagement {
 rootProject.name = "kmpicture"
 
 include(
-    ":app",
     ":core-domain",
     ":core-ui",
+    ":kmpicture",
     ":platform-android",
     ":platform-ios",
 )

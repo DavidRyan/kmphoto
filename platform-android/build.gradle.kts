@@ -12,6 +12,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project(":core-domain"))
+                implementation("androidx.core:core-ktx:1.12.0")
+                implementation("androidx.exifinterface:exifinterface:1.3.7")
             }
         }
     }
