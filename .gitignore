@@ -1,0 +1,16 @@
+.DS_Store
+.idea/
+.gradle/
+build/
+**/build/
+local.properties
+*.iml
+*.log
+*.tmp
+*.swp
+*.swo
+*.hprof
+*.keystore
+*.jks
+/.kotlin/
+/.konan/

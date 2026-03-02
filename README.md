@@ -18,6 +18,24 @@ ImageSelectorBottomSheet(
 )
 ```
 
+## JitPack
+
+Add JitPack to your repositories and depend on the published artifact:
+
+```kotlin
+// settings.gradle.kts or build.gradle.kts
+repositories {
+    maven("https://jitpack.io")
+}
+```
+
+```kotlin
+// build.gradle.kts
+dependencies {
+    implementation("com.github.<GitHubUser>:<Repo>:<Tag>")
+}
+```
+
 ## Permissions (Android)
 The library requests permission at runtime. You must declare the manifest permission in your app:
 

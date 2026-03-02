@@ -32,6 +32,7 @@ kotlin {
             }
         }
         val iosMain by creating {
+            dependsOn(commonMain)
             dependencies {
                 implementation(project(":platform-ios"))
             }

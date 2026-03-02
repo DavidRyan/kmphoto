@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.kmpicture.domain.ImageAsset
 import com.example.kmpicture.domain.ImagePickerController
+import com.example.kmpicture.domain.ImagePickerError
 import com.example.kmpicture.domain.ImageSelection
 import com.example.kmpicture.domain.SelectionMode
 
