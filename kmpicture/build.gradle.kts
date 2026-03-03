@@ -5,6 +5,8 @@ plugins {
     id("maven-publish")
 }
 
+group = "com.github.DavidRyan.kmphoto"
+
 kotlin {
     androidTarget {
         publishLibraryVariants("release")

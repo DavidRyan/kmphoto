@@ -2,7 +2,10 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
+    id("maven-publish")
 }
+
+group = "com.github.DavidRyan.kmphoto"
 
 kotlin {
     androidTarget()

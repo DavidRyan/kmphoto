@@ -1,6 +1,9 @@
 plugins {
     kotlin("multiplatform")
+    id("maven-publish")
 }
+
+group = "com.github.DavidRyan.kmphoto"
 
 kotlin {
     iosX64()
