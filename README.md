@@ -32,7 +32,7 @@ repositories {
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.github.<GitHubUser>:<Repo>:<Tag>")
+    implementation("com.github.DavidRyan:kmphoto:0.0.1")
 }
 ```
 
