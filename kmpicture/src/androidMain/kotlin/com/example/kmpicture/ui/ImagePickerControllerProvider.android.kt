@@ -38,30 +38,39 @@ private fun rememberAndroidPermissionProvider(): PermissionProvider {
     val scope = rememberCoroutineScope()
     val pendingResult = remember { PermissionRequestState() }
     val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { granted ->
-        pendingResult.complete(granted)
+        ActivityResultContracts.RequestMultiplePermissions(),
+    ) { result ->
+        pendingResult.complete(result)
     }
     val launcherState = rememberUpdatedState(launcher)
 
     return remember(context) {
         object : PermissionProvider {
             override suspend fun ensureReadAccess(): Boolean {
-                val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    Manifest.permission.READ_MEDIA_IMAGES
-                } else {
-                    Manifest.permission.READ_EXTERNAL_STORAGE
+                val permissions = mutableListOf(
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        Manifest.permission.READ_MEDIA_IMAGES
+                    } else {
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    },
+                )
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    permissions.add(Manifest.permission.ACCESS_MEDIA_LOCATION)
                 }
-                val hasPermission = ContextCompat.checkSelfPermission(
-                    context,
-                    permission,
-                ) == PackageManager.PERMISSION_GRANTED
+
+                val hasPermission = permissions.all { permission ->
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        permission,
+                    ) == PackageManager.PERMISSION_GRANTED
+                }
                 if (hasPermission) return true
 
                 val deferred = CompletableDeferred<Boolean>()
-                pendingResult.register(deferred)
+                pendingResult.register(deferred, permissions)
                 scope.launch {
-                    launcherState.value.launch(permission)
+                    launcherState.value.launch(permissions.toTypedArray())
                 }
                 return deferred.await()
             }
@@ -71,13 +80,17 @@ private fun rememberAndroidPermissionProvider(): PermissionProvider {
 
 private class PermissionRequestState {
     private var deferred: CompletableDeferred<Boolean>? = null
+    private var required: List<String> = emptyList()
 
-    fun register(next: CompletableDeferred<Boolean>) {
+    fun register(next: CompletableDeferred<Boolean>, requiredPermissions: List<String>) {
         deferred = next
+        required = requiredPermissions
     }
 
-    fun complete(value: Boolean) {
-        deferred?.complete(value)
+    fun complete(result: Map<String, Boolean>) {
+        val granted = required.all { result[it] == true }
+        deferred?.complete(granted)
         deferred = null
+        required = emptyList()
     }
 }
