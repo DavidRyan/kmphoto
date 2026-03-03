@@ -7,7 +7,9 @@ plugins {
 group = "com.github.DavidRyan.kmphoto"
 
 kotlin {
-    androidTarget()
+    androidTarget {
+        publishLibraryVariants("release")
+    }
     iosX64()
     iosArm64()
     iosSimulatorArm64()
