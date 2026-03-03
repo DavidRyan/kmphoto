@@ -20,7 +20,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":core-domain"))
+                api(project(":core-domain"))
                 implementation(project(":core-ui"))
                 implementation(compose.runtime)
                 implementation(compose.foundation)
