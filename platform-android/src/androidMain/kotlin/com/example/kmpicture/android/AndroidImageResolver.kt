@@ -2,6 +2,8 @@ package com.example.kmpicture.android
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import androidx.exifinterface.media.ExifInterface
 import com.example.kmpicture.domain.GeoPoint
 import com.example.kmpicture.domain.ImageAsset
@@ -18,17 +20,22 @@ class AndroidImageResolver(
 ) : ImageSelectionResolver {
     override suspend fun resolve(asset: ImageAsset): ImageSelection {
         val uri = Uri.parse(asset.previewUri)
+        val sourceUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.setRequireOriginal(uri)
+        } else {
+            uri
+        }
         val contentResolver = context.contentResolver
         val cacheFile = File(
             context.cacheDir,
             "kmpicture_${System.currentTimeMillis()}_${asset.id}.jpg",
         )
 
-        val hasExif = contentResolver.openInputStream(uri)?.use { input ->
+        val hasExif = contentResolver.openInputStream(sourceUri)?.use { input ->
             runCatching { containsExif(ExifInterface(input)) }.getOrDefault(false)
         } ?: false
 
-        contentResolver.openInputStream(uri)?.use { input ->
+        contentResolver.openInputStream(sourceUri)?.use { input ->
             FileOutputStream(cacheFile).use { output ->
                 input.copyTo(output)
             }
