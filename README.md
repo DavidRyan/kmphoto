@@ -32,7 +32,7 @@ repositories {
 ```kotlin
 // build.gradle.kts
 dependencies {
-    implementation("com.github.DavidRyan:kmphoto:0.0.1")
+    implementation("com.github.DavidRyan.kmphoto:kmpicture:0.0.1")
 }
 ```
 
